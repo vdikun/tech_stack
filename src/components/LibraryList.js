@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import ListItem from './ListItem';
 
 class LibraryList extends Component {
-    renderItem(library) {
-        return <ListItem library={library} />
+    renderItem({ item }) {
+        return <ListItem library={item} />
     }
 
     render() {
-        console.log(this.props);
         return (
             <FlatList
                 data={this.props.libraries}
@@ -18,7 +17,7 @@ class LibraryList extends Component {
             />
         );
     }
-}
+};
 
 const mapStateToProps = state => {
     return { libraries: state.libraries };
