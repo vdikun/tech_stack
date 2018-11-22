@@ -1,14 +1,32 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import { connect } from 'react-redux';
 import { CardSection } from './common';
 import PropTypes from 'prop-types';
+import styles from './styles/ListItem';
+import * as actions from '../actions';
 
 class ListItem extends Component {
     render() {
+        const { titleStyle } = styles;
+        const { selectLibrary, library } = this.props;
+        const { id, title } = library;
+
+        // props contains selectLibrary action
+        console.log(this.props);
+
         return (
-            <CardSection>
-                <Text>{ this.props.library.title }</Text>
-            </CardSection>
+            <TouchableWithoutFeedback
+                onPress={() => selectLibrary(id)}
+            >
+                <View>
+                    <CardSection>
+                        <Text style = { titleStyle }>
+                            { title }
+                        </Text>
+                    </CardSection>
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
 };
@@ -18,4 +36,5 @@ ListItem.propTypes = {
     library: PropTypes.object.isRequired
 };
 
-export default ListItem;
+// connect makes actions available as props to ListItem
+export default connect(null, actions)(ListItem);
