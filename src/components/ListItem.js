@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    LayoutAnimation,
+    Text, 
+    TouchableWithoutFeedback, 
+    View 
+} from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection } from './common';
 import PropTypes from 'prop-types';
@@ -8,14 +13,20 @@ import * as actions from '../actions';
 
 class ListItem extends Component {
 
+    componentWillUpdate() {
+        LayoutAnimation.spring();
+    }
+
     renderDescription() {
-        const { library, selectedLibraries } = this.props;
+        const { expanded, library } = this.props;
         const { description, id } = library;
         //if (selectedLibraries.includes(id)) {
-        if (selectedLibraries.indexOf(id) > -1) {
+        if (expanded) {
             console.log("showing description for library " + id);
             return (
-                <Text>{description}</Text>
+                <CardSection>
+                    <Text style={{ flex: 1 }}>{description}</Text>
+                </CardSection>
             );
         }
     }
@@ -43,13 +54,15 @@ class ListItem extends Component {
     }
 };
 
-const mapStateToProps = state => {
-    return { selectedLibraries: state.selectedLibraries }
+const mapStateToProps = (state, ownProps) => {
+    const expanded = (state.selectedLibraries.indexOf(ownProps.library.id) > -1);
+    return { expanded };
 };
 
 // TODO: make library proptype for better type checking
 ListItem.propTypes = {
-    library: PropTypes.object.isRequired
+    library: PropTypes.object.isRequired,
+    expanded: PropTypes.bool.isRequired
 };
 
 // connect makes actions available to this.props
