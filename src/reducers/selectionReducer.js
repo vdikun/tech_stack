@@ -10,7 +10,7 @@ export default (state = [], action) => {
             }
             else {
                 // remove libraryId from array
-                newState = state;
+                newState = [ ...state ];
                 newState.splice(index, 1);
             }
             console.log(newState);
